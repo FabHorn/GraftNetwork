@@ -6,13 +6,13 @@ import argparse
 
 def get_blockheader_by_height(url, block_height):
     # bitmonerod is running on the localhost and port of 18081
-    
+
 
     # standard json header
     headers = {'content-type': 'application/json'}
 
     # the block to get
-    
+
 
     # bitmonerod' procedure/method to call
     rpc_input = {
@@ -29,9 +29,7 @@ def get_blockheader_by_height(url, block_height):
         data=json.dumps(rpc_input),
         headers=headers)
 
-    # pretty print json output
-    result = response.json();
-    return result
+    return response.json()
 
 
 def main():
@@ -51,19 +49,15 @@ def main():
 
 
     start_block = args.start_block
-    end_block    = start_block
-    
-    if args.end_block is not None:
-        end_block = args.end_block
-
+    end_block = args.end_block if args.end_block is not None else start_block
     end_block = end_block + 1
 
     daemon_address = args.daemon_address
 
-    url = daemon_address + "/json_rpc"
+    url = f"{daemon_address}/json_rpc"
     for block in range(start_block, end_block):
         result = get_blockheader_by_height(url, block)["result"]
-        
+
         if result["status"] == "OK":
             block_header = result["block_header"]
             # each row is:
